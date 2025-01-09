@@ -1,0 +1,30 @@
+{
+  "name": "tmdb-cli-tool",
+  "version": "1.0.0",
+  "description": "A simple command line interface (CLI) to fetch data from The Movie Database (TMDB) and display it in the terminal.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kxng0109/tmdb-cli-tool.git"
+  },
+  "keywords": [
+    "cli",
+    "commander.js",
+    "tmdb",
+    "api"
+  ],
+  "author": "Joshua Ike",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kxng0109/tmdb-cli-tool/issues"
+  },
+  "homepage": "https://github.com/kxng0109/tmdb-cli-tool#readme",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.0.0"
+  }
+}
