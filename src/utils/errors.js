@@ -8,32 +8,27 @@ const errorMessage = (message, code = 0, exit = true) => {
 	}
 };
 
+const errorMessages = {
+	ENOTFOUND: "Can not find address, incorrect hostname or check your internet connection.",
+	ETIMEDOUT: "Connection to api.themoviedb.org timed out. Try again.",
+	400: "Error with your request. Incorrect parameters.",
+	401: "You are not authorized to view this data. Check whether a valid token was provided in the .env file.",
+	404: "Requested url can not be found. Check the url and try again.",
+};
+
+const getErrorMessage = (err) => {
+	if (err.message && err.message.includes("ENOTFOUND"))
+		return errorMessages.ENOTFOUND;
+	if (err.message && err.message.includes("ETIMEDOUT"))
+		return errorMessages.ETIMEDOUT;
+	return (
+		errorMessages[err.status] ||
+		`An error occured while fetching data: ${err.message || err}.`
+	);
+};
+
 const errorHandler = (err) => {
-	if (err.message.includes("ENOTFOUND")) {
-		errorMessage(
-			"Can not find address, incorrect hostname or check your internet connection.",
-		);
-	} else if (err.message.includes("ETIMEDOUT")) {
-		errorMessage("Connection to api.themoviedb.org timed out. Try again.");
-	} else if (err.status === 400) {
-		errorMessage(
-			`Error with your request. Incorrect parameters. `,
-			err.status,
-		);
-	} else if (err.status === 401) {
-		errorMessage(
-			`You are not authorized to view this data. Check whether a valid token was provided in the .env file. ${err.message}`,
-			err.status,
-		);
-	} else if (err.status === 404) {
-		errorMessage(
-			"Requested url can not be found. Check the url and try again.",
-			err.status,
-		);
-	} else {
-		errorMessage(`An error occured while fetching data: ${err.message}.`);
-	}
+	errorMessage(getErrorMessage(err), err.status || 0);
 };
 
 export { errorHandler, errorMessage };
-

@@ -4,6 +4,9 @@
   "description": "A simple command line interface (CLI) to fetch data from The Movie Database (TMDB) and display it in the terminal.",
   "main": "app.js",
   "type": "module",
+  "bin": {
+    "tmdb-app": "./app.js"
+  },
   "scripts": {
     "start": "node ."
   },
@@ -27,6 +30,7 @@
     "axios": "^1.7.9",
     "chalk": "^5.4.1",
     "commander": "^13.0.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "redis": "^4.7.0"
   }
 }
