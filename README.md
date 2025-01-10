@@ -23,7 +23,7 @@ TMDB CLI App is a Command Line Interface (CLI) tool for fetching movie data from
 	```plaintext
 	TMDB_TOKEN=your_tmdb_api_token
 	```
-	
+
 4. Make the CLI executable and link it:
 	```bash
 	chmod +x app.js
@@ -34,17 +34,17 @@ TMDB CLI App is a Command Line Interface (CLI) tool for fetching movie data from
 ## Usage
 Run the CLI to fetch movies:
 ```bash
-node . -t <type>
+tmdb-app -t <type>
 ```
 Examples:
 - Fetch popular movies:
 	```bash
-	node . -t popular
+	tmdb-app -t popular
 	```
 
 - Fetch top-rated movies:
 	```bash
-	node . -t top
+	tmdb-app -t top
 	```
 
 ## Dependencies
