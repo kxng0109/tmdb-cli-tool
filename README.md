@@ -160,16 +160,7 @@ You can configure the Redis connection through the `.env` file as described abov
 
 ## Example Output
 
-By default, output will look like this:
-┌────────────────────────────────────────┬────────────────────────────────────────┬───────────────┐
-│ Title                                  │ Genre                                  │ Release date  │
-├────────────────────────────────────────┼────────────────────────────────────────┼───────────────┤
-│ The Shawshank Redemption               │ Drama,Crime                            │ 1994-09-23    │
-├────────────────────────────────────────┼────────────────────────────────────────┼───────────────┤
-│ The Godfather                          │ Drama,Crime                            │ 1972-03-14    │
-├────────────────────────────────────────┼────────────────────────────────────────┼───────────────┤
-
-But you can always make changes to [handleData.js](/src/handleData.js) to appear in JSON format like:
+By default the output will appear in a tabular form, but you can always make changes to [handleData.js](/src/services/handleData.js) to appear in JSON format like:
 ```json
 {
   "title": "The Shawshank Redemption",
