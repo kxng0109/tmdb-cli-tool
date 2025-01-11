@@ -1,22 +1,19 @@
 import axios from "axios";
-import chalk from "chalk";
-import { createClient } from "redis";
-import { errorHandler, errorMessage } from "../utils/errors.js";
+import { errorHandler } from "../utils/errors.js";
+import logOngoing from "../utils/logOngoing.js";
+import logSuccess from "../utils/logSuccess.js";
 import setMovieType from "../utils/setMovieType.js";
 import handleData from "./handleData.js";
-
-const redisClient = await createClient()
-	.on("error", (err) => errorMessage(`Redis client error: ${err}`))
-	.connect();
+import redisClient from "./redisClient.js";
 
 const fetchMovieData = async (movieType) => {
 	try {
 		movieType = setMovieType(movieType);
-		console.log(chalk.yellow("Fetching data from API..."))
+		logOngoing("Fetching data from API...");
 
 		const redisMovieData = await redisClient.get(movieType);
 		if (redisMovieData) {
-			console.log(chalk.green("Fetching from Redis Cache instead"));
+			logOngoing("Fetching from Redis Cache instead.");
 			await handleData(JSON.parse(redisMovieData));
 			return;
 		}
@@ -33,14 +30,12 @@ const fetchMovieData = async (movieType) => {
 		const res = await axios.get(url, options);
 		const movies = res.data.results;
 		if (!movies) errorHandler("Resource did not return anything");
-		console.log(chalk.green("Fetched data from API"))
+		logSuccess("Fetched data from API");
 		//Expires in 10 minutes
 		await redisClient.setEx(movieType, 600, JSON.stringify(movies));
 		await handleData(movies);
 	} catch (err) {
 		errorHandler(err);
-	} finally {
-		redisClient.disconnect();
 	}
 };
 

@@ -1,10 +1,6 @@
 import axios from "axios";
-import { createClient } from "redis";
-import { errorHandler, errorMessage } from "../utils/errors.js";
-
-const redisClient = await createClient()
-	.on("error", (err) => errorMessage(`Redis client error, ${err}`))
-	.connect();
+import { errorHandler } from "../utils/errors.js";
+import redisClient from "./redisClient.js";
 
 const fetchGenres = async () => {
 	const options = {

@@ -9,7 +9,7 @@ const errorMessage = (message, code = 0, exit = true) => {
 };
 
 const errorMessages = {
-	ENOTFOUND: "Can not find address, incorrect hostname or check your internet connection.",
+	ENOTFOUND: `Can not find address, incorrect hostname or check your internet connection.`,
 	ETIMEDOUT: "Connection to api.themoviedb.org timed out. Try again.",
 	400: "Error with your request. Incorrect parameters.",
 	401: "You are not authorized to view this data. Check whether a valid token was provided in the .env file.",
