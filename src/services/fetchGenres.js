@@ -26,8 +26,6 @@ const fetchGenres = async () => {
 		return data;
 	} catch (err) {
 		errorHandler(err);
-	} finally {
-		redisClient.disconnect();
 	}
 };
 

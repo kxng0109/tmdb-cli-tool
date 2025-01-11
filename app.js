@@ -4,6 +4,7 @@ import { Command, Option } from "commander";
 import { config } from "dotenv";
 import { default as fetchMovieData } from "./src/services/fetchMovieData.js";
 import { errorMessage } from "./src/utils/errors.js";
+import myParseInt from "./src/utils/myParseInt.js";
 const program = new Command();
 config();
 
@@ -22,8 +23,10 @@ program
 			"upcoming",
 		]).default("popular", "defaults to popular if no type is provided")
 	)
+	.option("-p, --page <number>", "Page number to fetch", myParseInt, 1)
+	.option("-g, --genre <type>", "Movie genre to fetch")
 	.action((options) => {
-		fetchMovieData(options.type)
+		fetchMovieData(options.type, options.page, options.genre)
 	});
 
 program.parse();

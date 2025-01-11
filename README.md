@@ -1,18 +1,21 @@
 # TMDB CLI TOOL
 
-TMDB CLI tool is a Command Line Interface (CLI) tool for fetching movie data from [The Movie Database (TMDB)](https://www.themoviedb.org/). It supports Redis caching for faster responses and efficient API usage. Project idea gotten from [roadmap.sh](https://roadmap.sh/projects/tmdb-cli).
+TMDB CLI tool is a Command Line Interface (CLI) tool for fetching movie data from [The Movie Database (TMDB)](https://www.themoviedb.org/). You can fetch movies by type, genre, and page number, displaying results in a structured format. It supports Redis caching for faster responses and efficient API usage. Project idea gotten from [roadmap.sh](https://roadmap.sh/projects/tmdb-cli).
 
 ## Features
 
 - Fetch movies by type (`popular`, `now playing`, `top-rated`, or `upcoming`).
+- Filter movies by genre.
+- Fetch data from specific pages of results.
+- Results are displayed in a tabular format for better readability.
 - Caches API responses using Redis to optimize performance.
 - Supports local and Redis Cloud setups.
 
 ## Prerequisites
 
 1. Node.js (version 16 or higher).
-2. A Redis instance (local or cloud).
-3. A TMDB account and API key.
+2. A Redis instance ([local](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/) or [cloud](https://redis.io/cloud/)).
+3. A TMDB account and API key, which can be gotten from [TMDB](https://www.themoviedb.org/settings/api).
 
 ## Installation
 1. Clone the repository:
@@ -63,16 +66,58 @@ Replace `<type>` with one of the following options:
    - `top` (top rated)
    - `upcoming`
 
-Examples:
-- Fetch popular movies:
-	```bash
-	tmdb-app -t popular
-	```
+### Options:
 
-- Fetch top-rated movies:
-	```bash
-	tmdb-app -t top
-	```
+| Option                | Description                                                      | Default Value         |
+|-----------------------|------------------------------------------------------------------|-----------------------|
+| `-t, --type <type>`   | Type of movies to fetch (`playing`, `popular`, `top`, `upcoming`). | `popular`            |
+| `-p, --page <number>` | Page number of the results to fetch.                             | `1`                  |
+| `-g, --genre <type>`  | Filter results by genre (e.g., `Action`, `Comedy`, `Drama, e.t.c`).      | None                 |
+
+### Example Commands:
+
+1. Fetch popular movies:
+   ```bash
+   tmdb-app -t popular
+   ```
+
+2. Fetch top-rated movies from page 2:
+   ```bash
+   -tmdb-app -t top -p 2
+   ```
+
+3. Fetch action movies that are currently popular:
+   ```bash
+   -tmdb-app -g Action
+   ```
+
+---
+
+## Features in Detail
+
+### Genre Filtering
+The `-g, --genre` option allows you to filter movies by a specific genre. If you provide an invalid genre name, the CLI will return an error.
+
+### Caching with Redis
+Results are cached in Redis for improved performance:
+- Movies by type and page are cached for 10 minutes.
+- Genre lists are cached for 24 hours.
+
+You can configure the Redis connection through the `.env` file as described above.
+
+---
+
+## Redis Setup
+
+### Local Redis Setup
+- Install Redis locally on your system.
+- Ensure Redis is running on the default port (`6379`).
+
+### Redis Cloud Setup
+- Sign up for a free Redis Cloud account [here](https://redis.com/try-free/).
+- Obtain your Redis Cloud credentials and add them to the `.env` file.
+
+---
 
 ## How It Works
 
@@ -97,6 +142,7 @@ Examples:
 │   │   ├── errors.js
 │   │   ├── logOngoing.js
 │   │   ├── logSuccess.js
+│   │   ├── myParseInt.js
 │   │   └── setMovieType.js
 ├── app.js
 ├── package.json
@@ -114,6 +160,16 @@ Examples:
 
 ## Example Output
 
+By default, output will look like this:
+┌────────────────────────────────────────┬────────────────────────────────────────┬───────────────┐
+│ Title                                  │ Genre                                  │ Release date  │
+├────────────────────────────────────────┼────────────────────────────────────────┼───────────────┤
+│ The Shawshank Redemption               │ Drama,Crime                            │ 1994-09-23    │
+├────────────────────────────────────────┼────────────────────────────────────────┼───────────────┤
+│ The Godfather                          │ Drama,Crime                            │ 1972-03-14    │
+├────────────────────────────────────────┼────────────────────────────────────────┼───────────────┤
+
+But you can always make changes to [handleData.js](/src/handleData.js) to appear in JSON format like:
 ```json
 {
   "title": "The Shawshank Redemption",
@@ -138,10 +194,16 @@ Examples:
 - [Axios](https://axios-http.com/) - HTTP requests
 - [dotenv](https://github.com/motdotla/dotenv) - Environment variable management
 - [chalk](https://github.com/chalk/chalk) - Terminal string styling
+- [cli-table3](https://github.com/cli-table/cli-table3) - Showing results in tabular form
 
 ## Future Plans
-- Enhance the CLI interface with tabular outputs.
-- Add more options for fetching movie details.
+- [X] Add support for Redis Cloud.
+- [X] Enhance the CLI interface with tabular outputs.
+- [X] Add more options for fetching movie details.
 
 ## License
 This project is licensed under the MIT [License](/LICENSE).
+
+## Notes
+- Please ensure your Redis server is running before using the CLI tool.
+- Make sure your `.env` file is correctly configured to avoid runtime errors.
